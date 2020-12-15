@@ -108,7 +108,6 @@ defmodule Advent04 do
 end
 
 [passports] = PassportParser.parse(IO.read(:stdio, :all))
-#[passports] = PassportParser.parse("eyr:2024 pid:662406624 hcl:#cfa07d byr:1947 iyr:2015 ecl:amb hgt:150cm\n")
 
 valid =
   Enum.count(passports, fn p ->
