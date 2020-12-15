@@ -61,7 +61,7 @@ defmodule PassportParser do
     ])
   end
 
-  def valid_year?(year, min, max) do
+  defp valid_year?(year, min, max) do
     String.length(year) == 4 and
       case Integer.parse(year) do
         {v, _} when v >= min and v <= max -> true
@@ -69,7 +69,7 @@ defmodule PassportParser do
       end
   end
 
-  def valid_height?(str) do
+  defp valid_height?(str) do
     case Combine.parse(
            to_string(str),
            integer()
@@ -81,21 +81,21 @@ defmodule PassportParser do
     end
   end
 
-  def valid_hair_color?(str) do
+  defp valid_hair_color?(str) do
     case Combine.parse(str, string("#") |> times(hex_digit(), 6)) do
       {:error, _} -> false
       _ -> true
     end
   end
 
-  def valid_eye_color?(str) do
+  defp valid_eye_color?(str) do
     Enum.any?(
       ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"],
       fn s -> s == str end
     )
   end
 
-  def valid_passport_id?(str) do
+  defp valid_passport_id?(str) do
     String.length(str) == 9 and
       case Combine.parse(str, integer()) do
         [x] when is_integer(x) -> true
