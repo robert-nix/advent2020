@@ -43,22 +43,23 @@ defmodule Advent10 do
         Enum.sort(ratings),
         {[3], 0},
         fn j, {l, last} ->
-          {l ++ [j - last], j}
+          {[j - last] ++ l, j}
         end
       )
 
-    Enum.reverse(deltas)
-    |> Enum.reduce({1, 0}, fn delta, {p, ones} ->
-      if delta == 1 do
-        {p, ones + 1}
-      else
-        IO.puts("adding sets for #{ones} ones")
-        {p * count_sum_sets(ones), 0}
-      end
-    end)
+    {count, _} =
+      Enum.reduce(deltas, {1, 0}, fn delta, {p, ones} ->
+        if delta == 1 do
+          {p, ones + 1}
+        else
+          {p * count_sum_sets(ones), 0}
+        end
+      end)
+
+    count
   end
 
-  defp sum_subset_permutations(summands) when length(summands) == 1, do: 0
+  defp sum_subset_permutations(summands) when length(summands) <= 1, do: 0
 
   defp sum_subset_permutations(summands) do
     n = length(summands)
@@ -110,11 +111,6 @@ end
 ratings = Advent10.read_ratings()
 {d1, d2, d3} = Advent10.joltage_differences(ratings)
 IO.puts("d1 = #{d1}; d2 = #{d2}; d3 = #{d3}; d1 * d3 = #{d1 * d3}")
-
-Enum.each(1..10, fn i ->
-  sums = Advent10.count_sum_sets(i)
-  IO.puts("count_sum_sets(#{i}) = #{sums}")
-end)
 
 permutations = Advent10.count_charger_permutations(ratings)
 IO.puts("charger permutations: #{permutations}")
